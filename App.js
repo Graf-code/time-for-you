@@ -1,20 +1,37 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator } from "react-native";
+import Categories from "./src/screens/Categories";
+import { useFonts } from 'expo-font'
+import ProductsByCategories from './src/screens/ProductsByCategories'
+import { useState } from "react";
 
 export default function App() {
+  const [categorySelected, setCategorySelected] = useState('')
+
+  const oneReturnHome = () => {
+    setCategorySelected("")
+  }
+
+  console.log("Categoria Seleccionada: ", categorySelected)
+
+    const [fontLoaded] = useFonts ({
+      'Roboto-Thin': require('./assets/fonts/Roboto-Thin.ttf'),
+      'Roboto-Bold': require('./assets/fonts/Roboto-Bold.ttf')
+    })
+
+    if(!fontLoaded) return <ActivityIndicator />
+
+    const onSelectCategory= (category) => {
+      setCategorySelected(category)
+    }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <>{
+      categorySelected 
+      ?
+      <ProductsByCategories category={categorySelected} returnHomeHandlerEvent={oneReturnHome}/>
+      :
+      <Categories onSelectCategoryEvent={onSelectCategory} />
+     }
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
