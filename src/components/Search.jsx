@@ -19,7 +19,7 @@ const Search = ({ onSearchHandlerEvent }) => {
 
     const clearSearchInput = () => {
         setSearchInput('');
-        onSearchHandlerEvent('');
+        onSearchHandlerEvent(searchInput);
     };
 
   return (

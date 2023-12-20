@@ -2,15 +2,20 @@ import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-nativ
 import { AntDesign } from '@expo/vector-icons';
 import { colors } from '../global/colors'
 
-const Header = ({ title, returnHomeHandlerEvent, showHomeButton }) => {
+const Header = ({ title, showHomeButton, navigation }) => {
+    const handleHomePress = () => {
+      navigation.navigate('Categorias');
+    };
+
+
   return (
     <View style={styles.headerContainer}>
-      <Text style={styles.headerTitle}>{title}</Text>
       {showHomeButton && (
-        <TouchableOpacity onPress={returnHomeHandlerEvent}>
-          <AntDesign name="home" size={30} color="#fff" />
+        <TouchableOpacity onPress={handleHomePress}>
+          <AntDesign name="caretleft" size={30} color="#000" />
         </TouchableOpacity>
       )}
+      <Text style={styles.headerTitle}>{title}</Text>
     </View>
   )
 }
@@ -21,17 +26,16 @@ const styles = StyleSheet.create({
    headerContainer: {
     flexDirection: 'row',
     height: 100,
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'center',
-    backgroundColor: colors.primary,
+    backgroundColor: '#fff',
     alignItems: 'flex-end',
-    justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingBottom: 10,
 
    },
    headerTitle: {
-    color: '#fff',
+    color: '#000',
     fontFamily: 'Roboto-Bold',
     marginLeft: 10,
     fontSize: 16

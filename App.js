@@ -1,17 +1,10 @@
 import { ActivityIndicator } from "react-native";
-import Categories from "./src/screens/Categories";
 import { useFonts } from 'expo-font'
-import ProductsByCategories from './src/screens/ProductsByCategories'
-import { useState } from "react";
+
+import TabNavigator from "./src/navigation/TabNavigator";
+
 
 export default function App() {
-  const [categorySelected, setCategorySelected] = useState('')
-
-  const oneReturnHome = () => {
-    setCategorySelected("")
-  }
-
-  console.log("Categoria Seleccionada: ", categorySelected)
 
     const [fontLoaded] = useFonts ({
       'Roboto-Thin': require('./assets/fonts/Roboto-Thin.ttf'),
@@ -20,18 +13,11 @@ export default function App() {
 
     if(!fontLoaded) return <ActivityIndicator />
 
-    const onSelectCategory= (category) => {
-      setCategorySelected(category)
-    }
 
-  return (
-    <>{
-      categorySelected 
-      ?
-      <ProductsByCategories category={categorySelected} returnHomeHandlerEvent={oneReturnHome}/>
-      :
-      <Categories onSelectCategoryEvent={onSelectCategory} />
-     }
-    </>
-  );
-}
+    return (
+      
+      <TabNavigator />
+      );
+    }
+    
+    

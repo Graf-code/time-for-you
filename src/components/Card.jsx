@@ -15,11 +15,11 @@ const styles = StyleSheet.create({
     container: {
         shadowColor: '#000',
         shadowOffset: {
-            width: 15,
-            height: 15,
+            width: 5,
+            height: 5,
         },
-        elevation: 10,
+        elevation: 2,
         shadowOpacity: 5,
-        shadowRadius: 5,
+        shadowRadius: 0,
     }
 })
