@@ -41,3 +41,16 @@ const styles = StyleSheet.create({
     fontSize: 16
    }
 })
+
+// {
+//   navigation.canGoBack()
+//   ?
+// {showHomeButton && (
+// <TouchableOpacity onPress={handleHomePress}>
+//   <AntDesign name="caretleft" size={30} color="#000" />
+// </TouchableOpacity>
+// :
+// null
+
+// )}
+// }

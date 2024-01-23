@@ -40,6 +40,8 @@ const ShopNavigator = () => {
                     <Stack.Screen 
                     name="Detalle"
                     component={ProductDetail}
+                    options={{ 
+                        title: 'Detalle del producto'}}
                
                 /> 
             </Stack.Navigator>

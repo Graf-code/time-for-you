@@ -1,22 +1,23 @@
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import Card from './Card'
+import { useDispatch} from "react-redux"
+import { setCategorySelected } from '../features/shopSlices'
 
 
 const CategoryItem = ({ category, navigation }) => {
-    const onPressCategory = () => {
-        if (category) {
 
-            navigation.navigate("Productos", { category: category });
-        }
-    }
+    const dispatch = useDispatch()
 
-
-  return (
-    <TouchableOpacity onPress={onPressCategory}>
-        <Card style={styles.cardContainer}>
-            <Text style={styles.text}>{category}</Text>
-        </Card>
-    </TouchableOpacity>
+    return (
+        <TouchableOpacity onPress={()=> {
+            navigation.navigate("Productos", {category})
+            dispatch(setCategorySelected(category))
+            }
+            }>
+            <Card style={styles.cardContainer}>
+                <Text style={styles.text}>{category}</Text>
+            </Card>
+        </TouchableOpacity>
   )
 }
 
@@ -34,3 +35,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     }
 })
+    // const onPressCategory = () => {
+    //     if (category) {
+
+    //         navigation.navigate("Productos", { category: category });
+    //     }
+    // }

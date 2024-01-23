@@ -5,32 +5,43 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import cart_data from "../data/cart_data.json";
+// import cart_data from "../data/cart_data.json";
 // import { colors } from "../global/colors";
 import CartItem from "../components/CartItem";
 import Header from "../components/Header";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { usePostOrderMutation } from "../services/shopServices";
 
 const CartScreen = () => {
-    const [total, setTotal] = useState();
+    // const [total, setTotal] = useState();
     
-    useEffect(() => {
-      const totalCart = cart_data.reduce(
-        (accumulator, currentItem) =>
-          (accumulator += currentItem.price * currentItem.quantity),
-        0
-      );
-      setTotal(totalCart);
-    }, []);
+    // useEffect(() => {
+    //   const totalCart = cart_data.reduce(
+    //     (accumulator, currentItem) =>
+    //       (accumulator += currentItem.price * currentItem.quantity),
+    //     0
+    //   );
+    //   setTotal(totalCart);
+    // }, []);
+
+    const cartItems = useSelector(state=>state.cartReducer.items)
+    const total = useSelector(state=>state.cartReducer.total)
+    const [triggerPost] = usePostOrderMutation()
+
+    const confirmCart = () => {
+      triggerPost({total, cartItems, user:"LoggedUser", updatedAt: Date.now().toLocaleString()})
+    }
 
   const renderCartItem = ({item}) => (
-    <CartItem item={item} />
+    <CartItem item={item}/>
   );
+
 
   return (
     <View style={styles.cartContainer}>
       <FlatList
-        data={cart_data}
+        data={cartItems}
         renderItem={renderCartItem}
         keyExtractor={item=>item.id}
       />
@@ -44,6 +55,7 @@ const CartScreen = () => {
   );
 };
 
+
 export default CartScreen;
 
 const styles = StyleSheet.create({
@@ -53,16 +65,18 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   cartConfirm: {
-    marginBottom: 82,
+    marginBottom: 5,
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 15,
     justifyContent: "space-between",
-    backgroundColor: '#fff',
+    backgroundColor: '#ccc',
     padding: 5,
     margin: 2,
     borderRadius: 10,
     width: 'auto',
+    borderColor: "#000",
+    borderWidth: 2,
 },
   totalPrice: {
     fontSize: 16,
@@ -70,7 +84,7 @@ const styles = StyleSheet.create({
   },
   confirmButton: {
     backgroundColor: "#65B741",
-    padding: 7,
+    padding: 8,
     borderRadius: 10,
   },
   textConfirm: {

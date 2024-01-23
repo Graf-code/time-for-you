@@ -12,77 +12,59 @@ import { useEffect, useState } from "react";
 import products_data from "../data/products_data.json";
 // import Header from '../components/Header'
 import { colors } from "../global/colors";
+import { useSelector, useDispatch } from 'react-redux'
+import { setProductSelected } from "../features/shopSlices";
+import Carousel from "../components/Carousel";
+import { addItem } from "../features/cartSlice";
 
 const ProductDetail = ({ route }) => {
-  const [productSelected, setProductSelected] = useState({});
+  // const [productSelected, setProductSelected] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [isPortrait, setIsPortrait] = useState(true);
 
   const { height, width } = useWindowDimensions();
-  const { productId } = route.params;
+  const productId  = route.params;
+
+  const productSelected = useSelector(state=>state.shopReducer.productSelected)
 
   useEffect(() => {
-    setIsPortrait(height < width);
-  }, [height, width]);
+    height < width ? setIsPortrait(false) : setIsPortrait(true)
+  }, [height]);
 
   useEffect(() => {
-    const productNumber = parseInt(productId, 10);
-    const productFound = products_data.find(
-      (product) => product.id === productNumber
-    );
-    setProductSelected(productFound);
     setIsLoading(false);
   }, [productId]);
 
-  useEffect(() => {
-    console.log('Product Selected:', productSelected);
-  }, [productSelected]);
+  const dispatch = useDispatch()
+
+  const onAddToCart = () => {
+    dispatch(addItem({...productSelected, quantity: 1}))
+  }
 
   return (
     <>
-      {isLoading ? (
-        <ActivityIndicator />
-      ) : (
-        <>
-          {/* <Header title="Detalle del producto" /> */}
-          <ScrollView>
-            {/* <View>
-                </View> */}
-                <View style={styles.detailContainer}>
-                  {productSelected ? (
-                <>
-                    <Text style={styles.title}>{productSelected.title}</Text>
-                    { productSelected.images &&
-                          productSelected.images[0] && (
-                            <Image 
-                              source={{ uri: productSelected.images[0] }}
-                              resizeMode="contain"
-                              style={
-                                isPortrait
-                                  ? styles.imageProduct
-                                  : styles.imageProductLandscape
-                              }
-                            />
-                          )}
-                      <Text style={styles.description}>
-                        {productSelected.description}
-                      </Text>
-                      <Text style={styles.price}>{"$" + productSelected.price}</Text>
-                      <TouchableOpacity style={styles.buyButton}>
-                        <Text style={styles.buyText}>Comprar</Text>
-                      </TouchableOpacity>
-                </>
-              ) : (
-                <Text>Error: Producto no encontrado</Text>
-              )}
-            </View>
-          </ScrollView>
-        </>
-      )}
+    {
+      isLoading 
+      ?
+      <ActivityIndicator />
+      :
+      <>
+       <ScrollView >
+        <Carousel />
+        <View style={styles.detailContainer}>
+          <Text style={styles.title}>{productSelected.title}</Text>
+          <Text style={styles.description}>{productSelected.description}</Text>
+          <Text style={styles.price}>{productSelected.price}</Text>
+          <TouchableOpacity style={isPortrait ? styles.buyButton : styles.buyAlt} onPress={onAddToCart}>
+            <Text style={styles.buyText}>Agregar al Carrito</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+      </>
+    }
     </>
-  );
-};
-
+  )
+}
 export default ProductDetail;
 
 const styles = StyleSheet.create({
