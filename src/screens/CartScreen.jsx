@@ -1,40 +1,22 @@
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-// import cart_data from "../data/cart_data.json";
-// import { colors } from "../global/colors";
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CartItem from "../components/CartItem";
-import Header from "../components/Header";
-import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { usePostOrderMutation } from "../services/shopServices";
 
 const CartScreen = () => {
-    // const [total, setTotal] = useState();
-    
-    // useEffect(() => {
-    //   const totalCart = cart_data.reduce(
-    //     (accumulator, currentItem) =>
-    //       (accumulator += currentItem.price * currentItem.quantity),
-    //     0
-    //   );
-    //   setTotal(totalCart);
-    // }, []);
 
     const cartItems = useSelector(state=>state.cartReducer.items)
     const total = useSelector(state=>state.cartReducer.total)
+    const localId = useSelector(state=>state.authReducer.localId)
     const [triggerPost] = usePostOrderMutation()
 
     const confirmCart = () => {
-      triggerPost({total, cartItems, user:"LoggedUser", updatedAt: Date.now().toLocaleString()})
+      const createdAt = Date.now()
+      triggerPost({total, cartItems, localId: localId, createdAt: createdAt, updatedAt: Date.now().toLocaleString(), orderId: Math.ceil(Math.random(1,10)*1000)})
     }
 
-  const renderCartItem = ({item}) => (
-    <CartItem item={item}/>
+  const renderCartItem = ({ item }) => (
+    <CartItem item={ item } />
   );
 
 
@@ -43,12 +25,11 @@ const CartScreen = () => {
       <FlatList
         data={cartItems}
         renderItem={renderCartItem}
-        keyExtractor={item=>item.id}
       />
       <View style={styles.cartConfirm}>
-            <Text style={styles.totalPrice}>Total: USD {total}</Text>
-            <TouchableOpacity style={styles.confirmButton} onPress={null}>
-                <Text style={styles.textConfirm}>Confirmar</Text>
+            <Text style={styles.totalPrice}>Total: $ {total}</Text>
+            <TouchableOpacity style={styles.confirmButton} onPress={confirmCart}>
+                <Text style={styles.textConfirm}>Confirmar turno</Text>
             </TouchableOpacity>
       </View>
     </View>
@@ -65,31 +46,25 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   cartConfirm: {
-    marginBottom: 5,
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 15,
-    justifyContent: "space-between",
-    backgroundColor: '#ccc',
-    padding: 5,
-    margin: 2,
-    borderRadius: 10,
-    width: 'auto',
-    borderColor: "#000",
-    borderWidth: 2,
-},
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    backgroundColor: '#fff',
+    padding: 10,
+    borderRadius: 8,
+  },
   totalPrice: {
     fontSize: 16,
-    fontFamily: "Roboto-Bold",
+    fontFamily: 'Roboto-Bold',
   },
   confirmButton: {
-    backgroundColor: "#65B741",
+    backgroundColor: '#A2FF86',
     padding: 8,
     borderRadius: 10,
   },
   textConfirm: {
     fontFamily: 'Roboto-Bold',
     fontSize: 16,
-    color: "#000",
+    color: '#000',
   },
 });

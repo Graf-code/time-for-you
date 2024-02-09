@@ -1,6 +1,7 @@
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { useState } from 'react'
 import { Ionicons, Entypo } from '@expo/vector-icons'; 
+import { colors, shadowsBox } from '../global/colors';
 
 const Search = ({ onSearchHandlerEvent }) => {
     const [searchInput, setSearchInput] = useState('');
@@ -58,18 +59,20 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         padding: 10,
         borderBottomWidth: 1,
-        borberBottomColor: '#000',
+        borderColor: "#ccc",
         borderRadius: 10,
-        // backgroundColor: 'grey',
+        backgroundColor: '#fff',
         width: '85%',
         marginLeft: 'auto',
         marginRight: 'auto',
         marginTop: 5,
+        ...shadowsBox
     },
     textInput: {
         width: '80%',
-        fontFamily: 'Roboto-Thin',
+        fontFamily: 'Roboto-Bold',
         fontSize: 16,
+        color: "#000"
     },
     errorMessageContainer:{
         padding: 10,
@@ -82,6 +85,5 @@ const styles = StyleSheet.create({
     errorText: {
         color: 'red',
         textAlign: 'center'
-    }
-
+    }, 
 })

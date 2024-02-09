@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, TextInput } from 'react-native'
 import { useState } from 'react'
 
-const CustomInput = ({ label, isSecureEntry = false, error ="", onChange }) => {
+const CustomInput = ({ label, isSecureEntry = false, error ="", onChange, placeholder }) => {
     const [input, setInput] = useState()
 
     const onHandleChangeText = (text) => {
@@ -17,6 +17,7 @@ const CustomInput = ({ label, isSecureEntry = false, error ="", onChange }) => {
         onChangeText={onHandleChangeText}
         secureTextEntry={isSecureEntry}
         value={input}
+        placeholder={placeholder}
         />
         {error && <Text style={style.error}>{error}</Text>}
     </View>
@@ -28,28 +29,26 @@ export default CustomInput
 
 const style = StyleSheet.create ({
     inputContainer: {
-        justifyContent: "center",
-        width: "75%",
+        justifyContent: 'center',
+        width: '75%',
         alignItems: 'center',
     },
     input: {
-        borderWidth: 1,
-        borderColor: "#fff",
-        width: "100%",
-        backgroundColor: "#fff",
-        color: "#000",
+        borderBottomWidth: 1,
+        borderBottomColor: '#000',
+        borderStyle: 'solid',
+        width: '100%',
         padding: 8,
-        // backgroundColor:'#000'
+        fontSize: 17,
     },
     label: {
-        fontFamily: "Roboto-Bold",
-        color: "#000",
+        fontFamily: 'Roboto-Bold',
+        color: '#000',
         paddingLeft: 5,
         marginBottom: 4,
     },
     error: {
         padding: 10,
-        color: "#fff"
-    }
+        color: '#fff'
+    },
 })
-

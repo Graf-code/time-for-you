@@ -20,14 +20,17 @@ export const shopApi = createApi({
         }),
         postOrder: builder.mutation({
             query: ({...order}) => ({
-                url: 'orders.json',
+                url: `orders/${order.localId}.json`,
                 method: 'POST', 
                 body: order
             })
         }),
+        getOrders: builder.query({
+            query: (localId) => `orders/${localId}.json`
+        }),
         putProfilePicture: builder.mutation({
             query: ({image, localId})=>({
-                url: `profilePictures/${localId},json`,
+                url: `profilePictures/${localId}.json`,
                 method: 'PUT',
                 body: {
                     image: image,
@@ -50,20 +53,20 @@ export const shopApi = createApi({
                     address: location.address
                 }
             })
-        })
+        }),
 
     })
 })
 
-export const { useGetCategoriesQuery, 
+export const { 
+    useGetCategoriesQuery, 
     useGetProductsQuery, 
     useGetProductsByCategoryQuery, 
     usePostOrderMutation, 
-    usePostProfilePictureMutation, 
+    usePutProfilePictureMutation, 
     usePutPictureMutation,
     useGetProfilePicturesQuery,
     usePutUserLocationMutation,
-    useGetUserLocationQuery
+    useGetUserLocationQuery,
+    useGetOrdersQuery,
 } = shopApi
-
-// minuto 44:00

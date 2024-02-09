@@ -16,7 +16,7 @@ const ProfileNavigator = () => {
         }
         >
         <Stack.Screen 
-            name="Carrito"
+            name="Perfil"
             component={ProfileScreen}
         />
         <Stack.Screen 
@@ -24,7 +24,6 @@ const ProfileNavigator = () => {
             component={ImageSelectorScreen}
         />
     </Stack.Navigator>
-
     )
 }
 

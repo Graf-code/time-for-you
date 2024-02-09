@@ -6,6 +6,7 @@ import Header from "../components/Header";
 import Categories from '../screens/Categories'
 import ProductsByCategories from '../screens/ProductsByCategories'
 import ProductDetail from '../screens/ProductsDetail'
+import { StyleSheet } from "react-native";
 
 
 const Stack = createNativeStackNavigator()
@@ -21,15 +22,23 @@ const ShopNavigator = () => {
                         {...props}
                         title={route.name} 
                         showHomeButton={route.name !== 'Categorias'} 
-                        navigation={navigation} />
-                 ),
-                })}
-
+                        navigation={navigation} 
+                        />
+                    ),
+                        headerStyle: {
+                            backgroundColor:"#000",
+                        },
+                        headerTintColor: "#fff",
+                        headerTitleStyle: {
+                            fontWeight: "bold"
+                        }
+                    })}
                 >
-                <Stack.Screen 
+                <Stack.Screen
                     name="Categorias"
                     component={Categories}
-                    options={{ title: 'Categorias'}}
+                    options={{ 
+                        title: 'Categorias',}}
                 />
                     <Stack.Screen 
                     name="Productos"
@@ -42,11 +51,11 @@ const ShopNavigator = () => {
                     component={ProductDetail}
                     options={{ 
                         title: 'Detalle del producto'}}
-               
                 /> 
             </Stack.Navigator>
-        
     )
 }
 
 export default ShopNavigator
+
+

@@ -12,9 +12,11 @@ const OrdersNavigator = () => {
             initialRoutname="Ordenes"
             screenOptions={
                 ({ navigation, route }) => ({
-                    header: () => <Header title={route.name} navigation={navigation} />
-                })
-            }
+                    header: () => <Header title={route.name} navigation={navigation} />,
+                    contentStyle: { 
+                        backgroundColor: '#000',  
+                    },
+                })}
             >
                 <Stack.Screen
                     name="Ordenes"

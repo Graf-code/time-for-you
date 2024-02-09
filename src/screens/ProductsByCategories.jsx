@@ -1,17 +1,9 @@
-import {
-  ActivityIndicator,
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
 import { useState, useEffect } from "react";
-// import products_data from '../data/products_data.json'
-import ProductItem from "../components/ProductItem";
-// import Header from '../components/Header'
-import Search from "../components/Search";
-import { useSelector, useDispatch } from "react-redux";
+import { ActivityIndicator, FlatList, StyleSheet, Text } from "react-native";
+import { useSelector } from "react-redux";
 import { useGetProductsByCategoryQuery } from "../services/shopServices";
+import ProductItem from "../components/ProductItem";
+import Search from "../components/Search";
 
 const ProductsByCategories = ({ navigation, route }) => {
   const [productsByCategory, setProductsByCategory] = useState([]);
@@ -19,20 +11,17 @@ const ProductsByCategories = ({ navigation, route }) => {
 
   const category = useSelector((state) => state.shopReducer.categorySelected);
 
-  const {
-    data: productsFilteredByCategory,
-    isLoading,
-    error,
-  } = useGetProductsByCategoryQuery(category);
+  const { data, isLoading, error } = useGetProductsByCategoryQuery(category);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (!isLoading) {
-      const productsValues = Object.values(productsFilteredByCategory);
+      const productsValues = Object.values(data);
       const productsFiltered = productsValues.filter((product) =>
-        product.title.toLowerCase().includes(search.toLowerCase()))
-        setProductsByCategory(productsFiltered);
+        product.title.toLowerCase().includes(search.toLowerCase())
+      );
+      setProductsByCategory(productsFiltered);
     }
-  }, [isLoading, category, search]);
+  }, [isLoading, category, search, data]);
 
   const renderProductItem = ({ item }) => (
     <ProductItem product={item} navigation={navigation} />
@@ -44,34 +33,36 @@ const ProductsByCategories = ({ navigation, route }) => {
 
   return (
     <>
-      {isLoading ? 
-        <ActivityIndicator />
-        : 
+      {isLoading ? (
+        <ActivityIndicator style={styles.activityCharge} />
+      ) : error ? (
+        <Text>Error al cargar el producto</Text>
+      ) : productsByCategory.length === 0 ? (
+        <Text>Producto no encontrado</Text>
+      ) : (
         <>
           <Search onSearchHandlerEvent={onSearch} />
           <FlatList
             data={productsByCategory}
             renderItem={renderProductItem}
-            keyExtractor={item=>item.id}
+            keyExtractor={item => item.id.toString()}
           />
         </>
-      }
+      )}
     </>
   );
 };
 
 export default ProductsByCategories;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  activityCharge: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    height: 80,
+    size:"large",
+    padding: 20,
+  }
+});
 
-// const productsFilteredByCategory = products_data.filter(product=>product.category===category);
-// const { category } = route.params
-// const [originalProductsByCategory, setOriginalProductsByCategory] = useState([]);
-
-// useEffect(() => {
-//   if (selectedCategory !== null) {
-//   }
-// }, [selectedCategory]);
-// console.log("Route params: " ,route.params)
-// const [selectedCategory, setSelectedCategory] = useState(null)
-// const productsFilteredByCategory = useSelector(state=>state.shopReducer.productsFilteredByCategory)

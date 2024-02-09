@@ -9,16 +9,13 @@ import {
   ScrollView,
 } from "react-native";
 import { useEffect, useState } from "react";
-import products_data from "../data/products_data.json";
-// import Header from '../components/Header'
-import { colors } from "../global/colors";
+import { colors, shadowsBox } from "../global/colors";
 import { useSelector, useDispatch } from 'react-redux'
 import { setProductSelected } from "../features/shopSlices";
 import Carousel from "../components/Carousel";
 import { addItem } from "../features/cartSlice";
 
 const ProductDetail = ({ route }) => {
-  // const [productSelected, setProductSelected] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [isPortrait, setIsPortrait] = useState(true);
 
@@ -32,8 +29,9 @@ const ProductDetail = ({ route }) => {
   }, [height]);
 
   useEffect(() => {
+    dispatch(setProductSelected(productId));
     setIsLoading(false);
-  }, [productId]);
+ }, [productId, dispatch]); 
 
   const dispatch = useDispatch()
 
@@ -54,9 +52,10 @@ const ProductDetail = ({ route }) => {
         <View style={styles.detailContainer}>
           <Text style={styles.title}>{productSelected.title}</Text>
           <Text style={styles.description}>{productSelected.description}</Text>
-          <Text style={styles.price}>{productSelected.price}</Text>
+          <Text style={styles.title}>{productSelected.brand}</Text>
+          <Text style={styles.price}>$ {productSelected.price}</Text>
           <TouchableOpacity style={isPortrait ? styles.buyButton : styles.buyAlt} onPress={onAddToCart}>
-            <Text style={styles.buyText}>Agregar al Carrito</Text>
+            <Text style={styles.buyText}>Solicitar turno</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -70,44 +69,49 @@ export default ProductDetail;
 const styles = StyleSheet.create({
   imageProduct: {
     minWidth: 200,
-    width: "100%",
-    height: 200,
+    width: '100%',
+    height: 300,
   },
   imageProductLandscape: {
-    width: "100%",
+    width: '100%',
     height: 400,
     padding: 10,
     margin: 10,
   },
   detailContainer: {
-    alignItems: "center",
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    shadowColor: '#000000',
+    ...shadowsBox,
+    borderRadius: 10,
   },
   title: {
-    fontFamily: "Roboto-Bold",
-    fontSize: 20,
+    fontFamily: 'Roboto-Bold',
+    fontSize: 18,
     padding: 10,
-    },
+    textAlign: 'center',
+  },
   description: {
-    fontFamily: 'Roboto-Thin',
-    fontSize: 16,
+    fontFamily: 'Roboto-Bold',
+    fontSize: 18,
     color: '#000',
     marginTop: 20,
     padding: 20,
-    fontWeight: 'bold'
+    textAlign: 'center',
   },
   price: {
     fontFamily: 'Roboto-Bold',
-    fontSize: 30,
+    fontSize: 18,
     margin: 15,
   },
   buyButton: {
     marginTop: 10,
-    width: "90%",
+    width: '90%',
     padding: 10,
-    alignItems: "center",
-    backgroundColor: "green",
+    alignItems: 'center',
+    backgroundColor: 'green',
     borderRadius: 10,
-
+    marginBottom: 10,
   },
   buyText: {
     color: '#fff',
@@ -118,11 +122,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
     width: 200,
     padding: 10,
-    alignItems: "center",
+    alignItems: 'center',
     backgroundColor: colors.primary,
     borderRadius: 10,
   },
   landScapeConatiner: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
 });
